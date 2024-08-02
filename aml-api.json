@@ -1,0 +1,26 @@
+{
+    "config": {
+        "monitoring_required": true,
+        "monitoring_schedule": "ON_CHANGE",
+        "sources": {
+            "sanction_enabled": true,
+            "pep_enabled": true,
+            "watchlist_enabled": true,
+            "crimelist_enabled": true
+        },
+        "fuzzy_enabled": false,
+        "fuzzy_config": {
+            "phonetic_search_enabled": false,
+            "edit_distance_enabled": true
+        }
+    },
+    "user_fullname": "Example Name",
+    "user_firstname": "Example",
+    "user_middlename": "",
+    "user_lastname": "Name",
+    "user_dob": "1990-01-01",
+    "user_pob": "Budapest",
+    "user_photoid_number": "56789",
+    "user_id": "123456",
+    "user_country": "HU"
+}

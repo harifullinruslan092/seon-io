@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seon.io - test tool</title>
+    <style>
+        body {
+            margin: auto;
+            padding: 0 10px;
+            background-color: aliceblue;
+            text-align: center;
+        }
+
+        a {
+            margin: 10px;
+            text-decoration: none;
+        }
+
+        fieldset {
+            margin: auto;
+            margin-bottom: 20px;
+            width: 50%;
+            padding: 5px;
+            border-radius: 5px;
+            border: gray solid 1px;
+        }
+
+        form div {
+            margin: 15px;
+        }
+
+        legend {
+            font-size: larger;
+        }
+
+        input[type=text] {
+            width: 300px
+        }
+    </style>
+    <script src="https://cdn.deviceinf.com/js/v5/agent.js"></script>
+    <script>
+        function generateSessionId() {
+            // Generate a random number between 100000 and 999999
+            var randomNumber = Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000;
+            // Convert the random number to a string
+            var sessionId = randomNumber.toString();
+            // Add any additional formatting or manipulation if needed
+            // For example, you can add hyphens or divide the number into groups
+            return sessionId;
+        }
+        const session_id = generateSessionId()
+    </script>
+</head>
+
+
+
+<body onload=' seon.config({
+    host: " deviceinf.com ",
+    session_id:session_id ,
+    audio_fingerprint: true,
+    canvas_fingerprint: true,
+    webgl_fingerprint: true,
+    onSuccess: function(message) {
+        console.log("success ", message);
+    },
+    onError: function(message) {
+        console.log("error ", message);
+    }
+});'>
+    <h2>
+        SEON.IO FRAUD DETECTION SYSTEM
+    </h2>
+    <h3>
+        Fill out the form and check your fraud score
+    </h3>
+
+    <form id="form">
+        <legend>Personal information</legend>
+        <fieldset>
+            <div>
+                <label for="name">Name: </label>
+                <input type="text" name="name" id="name" placeholder="John">
+            </div>
+            <div>
+                <label for="full_name">Full Name: </label>
+                <input type="text" name="full_name" id="full_name" placeholder="Doe">
+            </div>
+            <div>
+                <label for="email">Email: </label>
+                <input type="text" name="email" id="email" placeholder="John.doe@gmail.com">
+            </div>
+            <div>
+                <label for="phone">Phone: </label>
+                <input type="tel" name="phone" id="phone" placeholder="180993465786">
+            </div>
+            <div>
+                <label for="birth-date">Birth date: </label>
+                <input type="date" name="birth-date" id="birth-date">
+            </div>
+        </fieldset>
+        <legend>Network and geolocation</legend>
+        <fieldset>
+            Determine your geolocation and IP
+            <div>
+                <a href="https://www.ip-score.com/" target="_blank">Link 1</a>
+                <a href="https://scamalytics.com/" target="_blank">Link 2</a>
+            </div>
+            <div>
+                <label for="ip"> IP Address:</label>
+                <input type="text" id="ip" name="ip" placeholder="xxx.xxx.xxx.xxx" />
+            </div>
+            <div>
+                <label for="country">Country code</label>
+                <input type="text" id="country" name="country" placeholder="NL" />
+            </div>
+            <div>
+                <label for="city">City</label>
+                <input type="text" id="city" name="city" placeholder="Rotterdam" />
+            </div>
+            <div>
+                <label for="region">Region</label>
+                <input type="text" id="region" name="region" placeholder="North Holland" />
+            </div>
+            <div>
+                <label for="zip">ZIP code</label>
+                <input type="text" id="zip" name="zip" placeholder="13456" />
+            </div>
+        </fieldset>
+
+        <legend>Fraud settings</legend>
+        <fieldset>
+            <div>
+                <label for="license-key"> API License key</label>
+                <input value="d7c23dc9-c8a0-4e02-8274-b155374e5be9" type="text" id="license-key" name="license-key"
+                    placeholder="d7c23dc9-c8a0-4e02-8274-b155374e5be9">
+            </div>
+            <div>
+                <label for="api-link"> FRAUD API Link</label>
+                <input value="https://api.seon.io/SeonRestService/fraud-api/v2.0/" type="text" id="api-link"
+                    name="api-link" placeholder="https://api.seon.io/SeonRestService/fraud-api/v2.0">
+            </div>
+            <div>
+                <label for="ip-api"> IP_API</label>
+                <input type="checkbox" id="ip-api" name="ip-api">
+            </div>
+            <div>
+                <label for="email-api"> EMAIL_API</label>
+                <input type="checkbox" id="email-api" name="email-api">
+            </div>
+            <div>
+                <label for="phone-api"> PHONE_API</label>
+                <input type="checkbox" id="phone-api" name="phone-api">
+            </div>
+            <div>
+                <label for="fingerprint-api"> Br_Fingerprint</label>
+                <input type="checkbox" id="fingerprint-api" name="fingerprint-api">
+            </div>
+            <div>
+                <label for="action-type">Action type: </label>
+                <select name="action-type" id="action-type" name="action-type">
+                    <option value="account_register">account_register</option>
+                    <option value="account_login">account_login</option>
+                </select>
+            </div>
+        </fieldset>
+        <div>
+            <input type="submit" value="Submit">
+            <input type="reset" value="Reset">
+
+        </div>
+    </form>
+
+</body>
+<script>
+    const form = document.getElementById('form')
+    form.addEventListener('submit', function () {
+        event.preventDefault();
+        event.stopPropagation();
+        seon.getBase64Session(function (data) {
+            if (data) {
+                console.log("Session payload", data);
+            } else {
+                console.log("Failed to retrieve session data.");
+            }
+        });
+        url = document.getElementById('api-link').value;
+        headers = {
+            'X-API-KEY': document.getElementById('license-key').value,
+            'Content-Type': 'application/json'
+        }
+        payload = {
+            "config": {
+                "ip": {
+                    "include": "flags,history,id",
+                    "version": "v1.1"
+                },
+                "email": {
+                    "include": "flags,history,id",
+                    "version": "v2.2"
+                },
+                "phone": {
+                    "include": "flags,history,id",
+                    "version": "v1.4"
+                },
+                "ip_api": document.getElementById('ip-api').value == 'on' ? true : false,
+                "email_api": document.getElementById('email-api').value == 'on' ? true : false,
+                "phone_api": document.getElementById('phone-api').value == 'on' ? true : false,
+                "device_fingerprinting": document.getElementById('fingerprint-api').value == 'on' ? true : false,
+            },
+            "ip": document.getElementById('ip').value,
+            "action_type": document.getElementById('action-type').value,
+            "affiliate_id": "",
+            "affiliate_name": "",
+            "email": document.getElementById('email').value,
+            "email_domain": document.getElementById('email').value.split('@').pop(),
+            "password_hash": "",
+            "user_fullname": document.getElementById('full_name').value,
+            "user_name": document.getElementById('name').value,
+            "user_id": "",
+            "transaction_id": "",
+            "user_dob": document.getElementById('birth-date').value,
+            "user_category": "",
+            "user_account_status": "",
+            "user_created": "",
+            "user_country": document.getElementById('country').value,
+            "user_city": document.getElementById('city').value,
+            "user_region": document.getElementById('region').value,
+            "user_zip": document.getElementById('zip').value,
+            "user_street": "",
+            "user_street2": "",
+            "session": session_id,
+            "phone_number": document.getElementById('phone').value,
+            "transaction_type": "",
+            "bonus_campaign_id": "",
+            "merchant_id": "",
+            "details_url": "",
+            "custom_fields": {}
+        }
+        console.log(payload)
+        // Make the POST request
+        fetch(url, {
+            method: 'POST',
+            headers: headers,
+            mode: 'no-cors',
+            body: JSON.stringify(payload)
+        })
+            .then(function (response) {
+                if (response.ok) {
+                    // Request successful
+                    console.log('Data sent successfully');
+                } else {
+                    // Request failed
+                    console.log('Error:', response.status);
+                }
+            })
+            .catch(function (error) {
+                console.log('Error:', error);
+            });
+
+    })
+</script>
+
+</html>

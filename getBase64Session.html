@@ -1,0 +1,32 @@
+<html>
+
+<head>
+    ...
+    <script src="https://cdn.deviceinf.com/js/v5/agent.js"></script>
+
+</head>
+
+<body onload='seon.config({
+    host: " deviceinf.com ",
+    session_id: "84266fdbd31d4c2c6d0665f7e8380fa3 ",
+    audio_fingerprint: true,
+    canvas_fingerprint: true,
+    webgl_fingerprint: true,
+    onSuccess: function(message) {
+        console.log("success ", message);
+    },
+    onError: function(message) {
+        console.log("error ", message);
+    }
+});'>
+    <h2>Seon browser fingerprint result</h2>
+    <form action="registration.py">
+        <label for="submit">Press the submit button for receiving fingerprint</label><br>
+        <button type="submit" name="submit" onclick='seon.getBase64Session(function(data) {
+            if (data) { 
+               console.log("Session payload", data); 
+               } 
+               else { 
+                   console.log("Failed to retrieve session data."); 
+                   } });'>Submit</button>
+    </form>
